@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.16
+        ports:
+        - containerPort: 80
+        envFrom:
+          - configMapRef:
+              name: mongodb-configmap
+# local volumes
+        volumeMounts:
+        - name: nginx-volume
+          mountPath: /usr/share/nginx/html/
+        - name: nginx-configmap
+          mountPath: /etc/nginx/conf.d/
+      volumes:
+      - name: nginx-volume
+        persistentVolumeClaim:
+          claimName: nfs-pvc
+      - name: nginx-configmap
+        configMap:
+          name: mongodb-configmap
+# host path volumes
+      # volumes:
+      # - name: nginx-volume
+      #   hostPath:
+      #     path: /home/nginx
+      # - name: nginx-configmap
+      #   configMap:
+      #     name: mongodb-configmap
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 31000

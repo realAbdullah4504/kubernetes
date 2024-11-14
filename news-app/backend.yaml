@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: news-app-backend
+  labels:
+    app: news-app-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: news-app-backend
+  template:
+    metadata:
+      labels:
+        app: news-app-backend
+    spec:
+      containers:
+      - name: news-app-backend
+        image: abdullah111111/news-app-backend
+        ports: 
+        - containerPort: 80
+        env:
+        - name: MONGO_URI
+          valueFrom:
+            configMapKeyRef:
+              name: news-configmap
+              key: database_url
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: news-app-backend
+spec:
+  selector:
+    app: news-app-backend
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30002
+

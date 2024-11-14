@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: handyman-deployment
+  labels:
+    app: handyman
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: handyman
+  template:
+    metadata:
+      labels:
+        app: handyman
+    spec:
+      containers:
+      - name: handyman
+        image: abdullah111111/handyman-app
+        ports: 
+        - containerPort: 3000
+        env:
+        - name: NEXT_PUBLIC_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: handyman-config
+              key: mode
+        - name: NEXT_MONGO_URL
+          valueFrom:
+            configMapKeyRef:
+              name: handyman-config
+              key: mongo_url
+        - name: BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: handyman-config
+              key: base_url
+        - name: NEXT_PUBLIC_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: handyman-config
+              key: public_url
+        - name: ACCESS_TOKEN_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: handyman-config
+              key: access_token_secret
+        - name: REFRESH_TOKEN_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: handyman-config
+              key: refresh_token_secret
+        - name: CLOUDINARY_URL
+          valueFrom:
+            configMapKeyRef:
+              name: handyman-config
+              key: cloudinary_url
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: handyman-service
+spec:
+  selector:
+    app: handyman
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+      nodePort: 32000
+

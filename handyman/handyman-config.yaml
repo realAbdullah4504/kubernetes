@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: handyman-config
+data:
+  mode: development
+  mongo_url: mongodb://root_user:example@mongodb-service:27017/developement?replicaSet=rs0&readPreference=secondary
+  public_url: http://localhost:3000
+  base_url: http://localhost:3000
+  access_token_secret: 12d34567890
+  refresh_token_secret: 12d34567890
+  cloudinary_url: cloudinary://195434589214847:j4aWR-dS4IVIoQuaX8q2EGGy-8g@dcncm1bi9

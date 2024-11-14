@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany  # Allows multiple pods to read/write to the volume
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /mnt/nfs_share  # Path to your NFS share
+    server: 172.27.142.51  # IP address of your NFS server (WSL in your case)
+  storageClassName: ""
