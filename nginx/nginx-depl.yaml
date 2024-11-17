@@ -17,33 +17,22 @@ spec:
       containers:
       - name: nginx
         image: nginx:1.16
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "200m"
+          requests:
+            memory: "64Mi"
+            cpu: "200m"
         ports:
         - containerPort: 80
-        envFrom:
-          - configMapRef:
-              name: mongodb-configmap
-# local volumes
         volumeMounts:
         - name: nginx-volume
           mountPath: /usr/share/nginx/html/
-        - name: nginx-configmap
-          mountPath: /etc/nginx/conf.d/
       volumes:
       - name: nginx-volume
         persistentVolumeClaim:
-          claimName: nfs-pvc
-      - name: nginx-configmap
-        configMap:
-          name: mongodb-configmap
-# host path volumes
-      # volumes:
-      # - name: nginx-volume
-      #   hostPath:
-      #     path: /home/nginx
-      # - name: nginx-configmap
-      #   configMap:
-      #     name: mongodb-configmap
-
+          claimName: ebs-pvc
 ---
 apiVersion: v1
 kind: Service
