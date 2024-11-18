@@ -1,3 +1,4 @@
+# sudo mkdir -p /mnt/disks/ebs
 apiVersion: v1
 kind: PersistentVolume
 metadata:
