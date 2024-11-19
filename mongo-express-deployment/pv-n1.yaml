@@ -1,0 +1,45 @@
+# sudo mkdir -p /mnt/disks/ebs
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodb-storage-0
+spec:
+  capacity:
+    storage: 8Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  local:
+    path: /mnt/disks/mongodb-0  # Correct path where the volume is mounted
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - minikube  # EC2 instance name (worker node name)
+---
+# sudo mkdir -p /mnt/disks/ebs
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodb-storage-1
+spec:
+  capacity:
+    storage: 8Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  local:
+    path: /mnt/disks/mongodb-1  # Correct path where the volume is mounted
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - minikube  # EC2 instance name (worker node name)
