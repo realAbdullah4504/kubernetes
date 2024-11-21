@@ -14,6 +14,10 @@ if ! command -v docker &> /dev/null; then
     newgrp docker
 fi
 
+# swap of
+sudo swapoff -a
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+
 # Install Kubernetes tools if not installed
 if ! command -v kubeadm &> /dev/null; then
     echo "Installing Kubernetes tools..."
@@ -25,13 +29,23 @@ if ! command -v kubeadm &> /dev/null; then
     sudo apt-mark hold kubelet kubeadm kubectl
 fi
 
+# Optional: Stop AppArmor if needed
+echo "Disabling AppArmor..."
+sudo systemctl stop apparmor && sudo systemctl disable apparmor
+
 # Restart services
 echo "Restarting container runtime and kubelet..."
 sudo systemctl daemon-reload
 sudo systemctl restart containerd.service kubelet
 
-# Optional: Stop AppArmor if needed
-echo "Disabling AppArmor..."
-sudo systemctl stop apparmor && sudo systemctl disable apparmor
+# Initialize Kubernetes cluster
+echo "Initializing Kubernetes cluster..."
+sudo apt install kubectx
+
+# Add kubectl alias to .bashrc
+echo "alias k='kubectl'" >> ~/.bashrc
+
+# Reload .bashrc
+source ~/.bashrc
 
 echo "Setup completed!"
