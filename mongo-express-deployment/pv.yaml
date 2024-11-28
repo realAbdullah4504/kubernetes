@@ -1,0 +1,45 @@
+# sudo mkdir -p /mnt/disks/mongodb-0
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodb-storage-0
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  local:
+    path: /mnt/disks/mongodb-0
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - minikube
+---
+# sudo mkdir -p /mnt/disks/mongodb-0
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodb-storage-0
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  local:
+    path: /mnt/disks/mongodb-0
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - minikube

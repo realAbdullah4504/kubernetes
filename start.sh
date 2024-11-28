@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# sudo cat /var/log/cloud-init-output.log
+# sudo cat /var/log/cloud-init.log
+
+set -e
 # Update system packages
 echo "Updating system packages..."
 sudo apt-get update
@@ -44,6 +48,7 @@ sudo apt install kubectx
 
 # Add kubectl alias to .bashrc
 echo "alias k='kubectl'" >> ~/.bashrc
+echo "export EDITOR=nano" >> ~/.bashrc
 
 # Reload .bashrc
 source ~/.bashrc
