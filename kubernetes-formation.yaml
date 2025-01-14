@@ -85,6 +85,14 @@ Resources:
           FromPort: 30000
           ToPort: 32767
           CidrIp: 0.0.0.0/0
+        - IpProtocol: udp
+          FromPort: 53
+          ToPort: 53
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 9443
+          ToPort: 9443
+          CidrIp: 0.0.0.0/0
 
   EC2Instance:
     Type: AWS::EC2::Instance
@@ -158,6 +166,11 @@ Resources:
           curl -LO https://github.com/opencontainers/runc/releases/download/v1.1.12/runc.amd64
           sudo install -m 755 runc.amd64 /usr/local/sbin/runc
 
+          # Install CNI plugins
+          curl -LO https://github.com/containernetworking/plugins/releases/download/v1.5.0/cni-plugins-linux-amd64-v1.5.0.tgz
+          sudo mkdir -p /opt/cni/bin
+          sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.5.0.tgz
+
           # Add Kubernetes package repository and install kubelet, kubeadm, kubectl
           sudo apt-get update
           sudo apt-get install -y apt-transport-https ca-certificates curl gpg
@@ -167,8 +180,23 @@ Resources:
           sudo apt-get update
           sudo apt-get install -y kubelet=1.29.6-1.1 kubeadm=1.29.6-1.1 kubectl=1.29.6-1.1 --allow-downgrades --allow-change-held-packages
           sudo apt-mark hold kubelet kubeadm kubectl
-          
-          echo "Initializing Kubernetes cluster..."
+
+          #configure crictl
+          sudo crictl config runtime-endpoint unix:///var/run/containerd/containerd.sock
+
+          # init kubeadm
+          sudo kubeadm init --pod-network-cidr=192.168.0.0/16
+
+          mkdir -p $HOME/.kube
+          sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+          sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+          # Install Calico CNI
+          kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/tigera-operator.yaml
+          curl https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/custom-resources.yaml -O
+          kubectl apply -f custom-resources.yaml
+
+          echo "Initializing Kubernetes namespace..."
           sudo apt install kubectx
 
           echo "Disabling AppArmor..."
@@ -272,5 +300,5 @@ Resources:
           echo "export EDITOR=nano" >> /home/ubuntu/.bashrc
 
           # Reload .bashrc
-          source /home/ubuntu/.bashrcsudo cat /etc/containerd/config.toml
+          source /home/ubuntu/.bashrc
           
