@@ -1,1 +1,3 @@
  kubectl apply -f ebs-pv.yaml -f ebs-pvc.yaml -f nginx-depl.yaml
+
+ 

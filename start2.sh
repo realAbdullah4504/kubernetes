@@ -1,8 +1,8 @@
 #!/bin/bash
-# Log all output to a file
-sudo cat /var/log/user-data.log
+# # Log all output to a file
 # sudo cat /var/log/user-data.log
-exec > /var/log/user-data.log 2>&1
+# # sudo cat /var/log/user-data.log
+# exec > /var/log/user-data.log 2>&1
 set -x  # Enable script debugging (print each command before executing)
 
 # Disable swap

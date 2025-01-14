@@ -18,10 +18,6 @@ if ! command -v docker &> /dev/null; then
     newgrp docker
 fi
 
-# swap of
-sudo swapoff -a
-sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
-
 # Install Kubernetes tools if not installed
 if ! command -v kubeadm &> /dev/null; then
     echo "Installing Kubernetes tools..."
@@ -32,6 +28,49 @@ if ! command -v kubeadm &> /dev/null; then
     sudo apt-get install -y kubelet kubeadm kubectl
     sudo apt-mark hold kubelet kubeadm kubectl
 fi
+
+
+# swap of
+sudo swapoff -a
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+
+cat <<EOF | sudo tee /etc/modules-load.d/k8
+overlay
+br_netfilter
+EOF
+
+sudo modprobe overlay
+
+sudo modprobe br_netfilter
+
+# sysctl params required by setup, params persist across reboots
+cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward                 = 1
+EOF
+
+cat <<EOF | sudo tee /etc/docker/daemon.json
+ {
+   "exec-opts": ["native.cgroupdriver=systemd"],
+   "log-driver": "json-file",
+   "log-opts": {
+   "max-size": "100m"
+},
+"storage-driver": "overlay2"
+}
+EOF
+
+cat <<EOF | sudo tee /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf
+Environment="KUBELET_EXTRA_ARGS=--fail-swap-on=false"
+EOF
+
+# Apply sysctl params without reboot
+sudo sysctl --system
+
+cat <<EOF | sudo tee /etc/default/kubelet
+KUBELET_EXTRA_ARGS="--cgroup-driver=cgroupfs"
+EOF
 
 # Optional: Stop AppArmor if needed
 echo "Disabling AppArmor..."
@@ -47,10 +86,10 @@ echo "Initializing Kubernetes cluster..."
 sudo apt install kubectx
 
 # Add kubectl alias to .bashrc
-echo "alias k='kubectl'" >> ~/.bashrc
-echo "export EDITOR=nano" >> ~/.bashrc
+echo "alias k='kubectl'" >> /home/ubuntu/.bashrc
+echo "export EDITOR=nano" >> /home/ubuntu/.bashrc
 
 # Reload .bashrc
-source ~/.bashrc
+source /home/ubuntu/.bashrc
 
 echo "Setup completed!"
