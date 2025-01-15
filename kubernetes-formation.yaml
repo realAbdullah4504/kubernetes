@@ -39,6 +39,7 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonElasticContainerRegistryPublicFullAccess
         - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
         - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
       RoleName: EC2S3FullAccessRole
 
   EC2InstanceProfile:
@@ -92,6 +93,14 @@ Resources:
         - IpProtocol: tcp
           FromPort: 9443
           ToPort: 9443
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 179
+          toPort: 179
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 5473
+          toPort: 5473
           CidrIp: 0.0.0.0/0
 
   EC2Instance:
@@ -301,4 +310,3 @@ Resources:
 
           # Reload .bashrc
           source /home/ubuntu/.bashrc
-          
