@@ -19,4 +19,4 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - minikube  # EC2 instance name (worker node name)
+                - ip-172-31-0-232  # EC2 instance name (worker node name)
