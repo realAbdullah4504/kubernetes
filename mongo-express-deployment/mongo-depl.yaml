@@ -52,7 +52,8 @@ spec:
       accessModes: ["ReadWriteOnce"]
       resources:
         requests:
-          storage: 1Gi
+          storage: 2Gi
+      storageClassName: ebs-sc
 
 ---
 apiVersion: v1
