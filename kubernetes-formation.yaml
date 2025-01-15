@@ -209,6 +209,9 @@ Resources:
           curl https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/custom-resources.yaml -O
           kubectl apply -f custom-resources.yaml
 
+          #install aws csi driver
+          kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.38"
+
           echo "Initializing Kubernetes namespace..."
           sudo apt install kubectx
 

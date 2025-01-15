@@ -48,6 +48,8 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: mongodb-storage
+      labels: 
+        app: mongodb-storage
     spec:
       accessModes: ["ReadWriteOnce"]
       resources:
