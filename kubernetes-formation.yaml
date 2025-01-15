@@ -200,6 +200,10 @@ Resources:
           sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
           sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
+          sudo mkdir -p /home/ubuntu/.kube 
+          sudo cp /etc/kubernetes/admin.conf /home/ubuntu/.kube/config 
+          sudo chown root:root /home/ubuntu/.kube/config
+
           # Install Calico CNI
           kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/tigera-operator.yaml
           curl https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/custom-resources.yaml -O
@@ -217,6 +221,10 @@ Resources:
 
           # Reload .bashrc
           source /home/ubuntu/.bashrc
+
+          # DNS resolution
+          sudo rm /etc/resolv.conf
+          sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 
 
   EC2InstanceWorker:
