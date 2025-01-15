@@ -2,10 +2,6 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: ebs-pvc
-  labels:
-    app: mongodb
-    tier: storage
-    type: database-storage
 spec:
   accessModes:
     - ReadWriteOnce
