@@ -4,7 +4,7 @@ metadata:
   name: handyman-config
 data:
   mode: development
-  mongo_url: mongodb://root_user:example@mongodb-service:27017/developement?replicaSet=rs0&readPreference=secondary
+  mongo_url: mongodb://admin:admin@mongodb-service:27017/developement?authSource=admin&replicaSet=rs0&readPreference=secondary
   public_url: http://localhost:3000
   base_url: http://localhost:3000
   access_token_secret: 12d34567890
