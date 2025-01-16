@@ -2,10 +2,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: handyman-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    kubernetes.io/ingress.class: nginx  # Changed from 'alb' to 'nginx'
 spec:
+  ingressClassName: nginx
   rules:
     - http:
         paths:
@@ -15,4 +13,4 @@ spec:
               service:
                 name: handyman-service
                 port:
-                  number: 80
+                  number: 80  # port the service listening
