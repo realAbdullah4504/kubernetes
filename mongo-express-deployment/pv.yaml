@@ -1,45 +1,47 @@
-# sudo mkdir -p /mnt/disks/mongodb-0
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mongodb-storage-0
+  name: ebs-pv
 spec:
   capacity:
-    storage: 1Gi
+    storage: 2Gi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  local:
-    path: /mnt/disks/mongodb-0
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - minikube
+  awsElasticBlockStore:
+    volumeID: vol-0ed7045524cbfcd4f 
+    fsType: ext4
+
 ---
-# sudo mkdir -p /mnt/disks/mongodb-0
+
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mongodb-storage-0
+  name: ebs-pv
 spec:
   capacity:
-    storage: 1Gi
+    storage: 2Gi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  local:
-    path: /mnt/disks/mongodb-0
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - minikube
+  awsElasticBlockStore:
+    volumeID: vol-01e214bb38ae492a6 
+    fsType: ext4
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ebs-pv
+spec:
+  capacity:
+    storage: 2Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  awsElasticBlockStore:
+    volumeID: vol-0c705b426559f11a8 
+    fsType: ext4
