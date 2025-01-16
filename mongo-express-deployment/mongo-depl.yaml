@@ -55,7 +55,7 @@ spec:
       resources:
         requests:
           storage: 2Gi
-      storageClassName: ebs-sc
+      # storageClassName: ebs-sc #only for the dynamic volumes
 
 ---
 apiVersion: v1
