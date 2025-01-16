@@ -32,9 +32,9 @@ spec:
 
 ---
 apiVersion: v1
-kind: mongodb-storage-2
+kind: PersistentVolume
 metadata:
-  name: ebs-pv2
+  name: mongodb-storage-2
 spec:
   capacity:
     storage: 2Gi
