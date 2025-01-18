@@ -69,6 +69,7 @@ sudo apt install kubectx
 echo "Disabling AppArmor..."
 sudo systemctl stop apparmor && sudo systemctl disable apparmor
 
-kubeadm join 172.31.15.207:6443 --token 1bi4y9.yxr9u4q1tkjrcoa4 --discovery-token-ca-cert-hash sha256:fcaf96551ee723ef8c8a802dfdfb2db3d78db6e65dbc9634be03c59ad50e1d76
+kubeadm join 172.31.15.207:6443 --token ehrdml.3mvg3xxvs2f3wy17 --discovery-token-ca-cert-hash sha256:fcaf96551ee723ef8c8a802dfdfb2db3d78db6e65dbc9634be03c59ad50e1d76
 mkdir -p /root/.kube 
 sudo cp /etc/kubernetes/kubelet.conf /root/.kube/config
+

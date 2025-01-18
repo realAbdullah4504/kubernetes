@@ -17,7 +17,7 @@ spec:
     spec:
       serviceAccountName: cluster-autoscaler
       containers:
-        - image: k8s.gcr.io/autoscaling/cluster-autoscaler:v1.23.0
+        - image: registry.k8s.io/autoscaling/cluster-autoscaler:v1.29.0
           name: cluster-autoscaler
           resources:
             limits:
@@ -31,14 +31,18 @@ spec:
             - --v=4
             - --stderrthreshold=info
             - --cloud-provider=aws
+            - --cloud-config=/etc/kubernetes/cloud-config.conf
             - --skip-nodes-with-local-storage=false
             - --expander=least-waste
             - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/kubernetes
           volumeMounts:
             - name: ssl-certs
-              mountPath: /etc/ssl/certs
+              mountPath: /etc/ssl/certs/ca-certificates.crt
               readOnly: true
+            - name: cloud-config
+              mountPath: /etc/kubernetes/cloud-config
+            
       volumes:
         - name: ssl-certs
           hostPath:
-            path: "/etc/ssl/certs"
+            path: "/etc/ssl/certs/ca-certificates.crt"
