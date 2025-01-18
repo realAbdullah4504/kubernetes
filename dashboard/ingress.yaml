@@ -14,3 +14,10 @@ spec:
                 name: handyman-service
                 port:
                   number: 80  # port the service listening
+          - path: /news-app/
+            pathType: Prefix
+            backend:
+              service:
+                name: news-app-service
+                port:
+                  number: 80
