@@ -408,9 +408,9 @@ Resources:
     DependsOn: EC2Instance
     Properties:
       AutoScalingGroupName: !Sub ${AWS::StackName}-asg
-      MinSize: 5
+      MinSize: 2
       MaxSize: 10
-      DesiredCapacity: 5
+      DesiredCapacity: 2
       HealthCheckType: EC2
       LaunchTemplate:
         LaunchTemplateId: !Ref EC2LaunchTemplate
