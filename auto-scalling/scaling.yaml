@@ -31,7 +31,6 @@ spec:
             - --v=4
             - --stderrthreshold=info
             - --cloud-provider=aws
-            - --cloud-config=/etc/kubernetes/cloud-config.conf
             - --skip-nodes-with-local-storage=false
             - --expander=least-waste
             - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/kubernetes
