@@ -23,7 +23,7 @@ helm upgrade --install ingress-nginx ingress-nginx \
 --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-target-node-labels"="env=production"
 
 kubectl delete validatingwebhookconfiguration ingress-nginx-admission
-kubectl scale deployment ingress-nginx-controller --replicas=2 -n ingress-nginx
+kubectl scale deployment ingress-nginx-controller --replicas=4 -n ingress-nginx
 
 
 git clone https://github.com/realAbdullah4504/kubernetes.git
