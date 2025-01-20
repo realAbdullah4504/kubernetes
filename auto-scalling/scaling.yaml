@@ -164,7 +164,6 @@ spec:
             - --expander=least-waste
             - --aws-use-static-instance-list=false
             - --nodes=1:5:kubernetes-stack-asg
-            - --node-group-auto-discovery=asg:tag=cluster-autoscaler.kubernetes.io/enabled=true,cluster-autoscaler.kubernetes.io/owned=true
           env:
           - name: AWS_REGION
             value: ap-south-1
