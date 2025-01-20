@@ -423,7 +423,7 @@ Resources:
           Value: true
         - Key: k8s.io/cluster-autoscaler/kubernetes
           PropagateAtLaunch: true
-          Value: true
+          Value: owned
       
   # EC2InstanceWorker:
   #   Type: AWS::EC2::Instance
