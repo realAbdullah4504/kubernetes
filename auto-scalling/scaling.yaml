@@ -164,6 +164,11 @@ spec:
             - --expander=least-waste
             - --aws-use-static-instance-list=false
             - --nodes=1:5:kubernetes-stack-asg
+          env:
+          - name: AWS_REGION
+            value: ap-south-1
+
+
           volumeMounts:
             - name: ssl-certs
               mountPath: /etc/ssl/certs/ca-certificates.crt
