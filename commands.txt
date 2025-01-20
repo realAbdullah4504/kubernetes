@@ -41,10 +41,10 @@ kubectl get nodes -o json | jq '.items[] | {name: .metadata.name, providerID: .s
 
 kubectl label nodes ip-172-31-42-24 env=production
 
-sudo kubectl patch node $(hostname) -p "{\"spec\":{\"providerID\": \"$PROVIDER_ID\"}}"
+sudo kubectl patch node $(hostname) -p "{\"spec\":{\"providerID\": \"aws:///ap-south-1/i-0a42c625e6cb3e098\"}}"
 
 subnet labels kubernetes.io/role/elb=1
-
+i-0a42c625e6cb3e098
 
 #!/bin/bash
 INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
@@ -53,10 +53,10 @@ PRIVATE_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
 
 
 # Set the providerID
-PROVIDER_ID="aws://${REGION}/${INSTANCE_ID}"
+PROVIDER_ID="aws:///${REGION}/${INSTANCE_ID}"
 
 # Apply the patch for the dynamically generated node name
-sudo kubectl patch node $(hostname) -p '{"spec":{"providerID":"'${PROVIDER_ID}'"}}' 
+sudo kubectl patch node $(hostname) -p "{\"spec\":{\"providerID\": \"$PROVIDER_ID\"}}" 
 sudo kubectl label nodes $(hostname) env=production
 
 # Restart kubelet to apply the changes
