@@ -37,7 +37,8 @@ spec:
             - --skip-nodes-with-local-storage=false
             - --skip-nodes-with-system-pods=true  # Add this line
             - --expander=least-waste
-            - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/kubernetes
+            # - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/kubernetes
+            - --nodes=1:5:kubernetes-stack-asg
           volumeMounts:
             - name: ssl-certs
               mountPath: /etc/ssl/certs/ca-certificates.crt
