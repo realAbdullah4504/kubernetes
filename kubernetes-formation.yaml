@@ -388,13 +388,15 @@ Resources:
             # Get instance metadata
             TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
             INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
-            REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/region)
 
             # set the PROVIDER_ID
-            PROVIDER_ID="aws:///$(REGION)/$(INSTANCE_ID)"
+            PROVIDER_ID="aws://${AWS::Region}/$INSTANCE_ID"
+            echo "PROVIDER_ID: $PROVIDER_ID"
+
+            echo $(`aws ec2 modify-instance-attribute --instance-id $INSTANCE_ID --no-source-dest-check`)
 
             # Then use the patch command
-            sudo kubectl patch node $(hostname) -p "{\"spec\":{\"providerID\":\"$(PROVIDER_ID)\"}}"
+            sudo kubectl patch node $(hostname) -p "{\"spec\":{\"providerID\": \"$PROVIDER_ID\"}}"
             sudo kubectl label nodes $(hostname) env=production
 
             # Restart the kubelet service
@@ -403,11 +405,12 @@ Resources:
 
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
+    DependsOn: EC2Instance
     Properties:
       AutoScalingGroupName: !Sub ${AWS::StackName}-asg
       MinSize: 1
       MaxSize: 5
-      DesiredCapacity: 2
+      DesiredCapacity: 1
       HealthCheckType: EC2
       LaunchTemplate:
         LaunchTemplateId: !Ref EC2LaunchTemplate

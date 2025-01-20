@@ -16,9 +16,6 @@ spec:
         app: cluster-autoscaler
     spec:
       serviceAccountName: cluster-autoscaler
-      env:
-      - name: AWS_REGION
-        value: ap-south-1
       containers:
         - image: registry.k8s.io/autoscaling/cluster-autoscaler:v1.29.0
           name: cluster-autoscaler
