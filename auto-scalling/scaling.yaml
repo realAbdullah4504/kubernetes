@@ -42,15 +42,8 @@ spec:
             - name: ssl-certs
               mountPath: /etc/ssl/certs/ca-certificates.crt
               readOnly: true
-            - name: cloud-config
-              mountPath: /etc/kubernetes/cloud-config.conf   # Mount as a file
-              subPath: cloud-config.conf    # Add this to mount the specific file
-
             
       volumes:
         - name: ssl-certs
           hostPath:
             path: "/etc/ssl/certs/ca-certificates.crt"
-        - name: cloud-config
-          configMap:
-            name: cloud-config
