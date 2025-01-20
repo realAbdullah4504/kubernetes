@@ -163,7 +163,7 @@ spec:
             - --skip-nodes-with-local-storage=false
             - --expander=least-waste
             - --aws-use-static-instance-list=false
-            - --nodes=1:100:kubernetes-stack-asg
+            - --nodes=1:5:kubernetes-stack-asg
           volumeMounts:
             - name: ssl-certs
               mountPath: /etc/ssl/certs/ca-certificates.crt
