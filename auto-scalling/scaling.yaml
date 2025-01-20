@@ -160,7 +160,6 @@ spec:
             - --v=4
             - --stderrthreshold=info
             - --cloud-provider=aws
-            - --cloud-config=/etc/kubernetes/cloud-config.conf
             - --skip-nodes-with-local-storage=false
             - --expander=least-waste
             - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled=true,k8s.io/cluster-autoscaler/kubernetes=owned
@@ -168,8 +167,6 @@ spec:
             - name: ssl-certs
               mountPath: /etc/ssl/certs/ca-certificates.crt
               readOnly: true
-            - name: cloud-config
-              mountPath: /etc/kubernetes/cloud-config
           imagePullPolicy: "Always"
           securityContext:
             allowPrivilegeEscalation: false
@@ -181,9 +178,3 @@ spec:
         - name: ssl-certs
           hostPath:
             path: /etc/ssl/certs/ca-certificates.crt
-        - name: cloud-config
-          configMap:
-            name: cloud-config
-            items:
-              - key: cloud-config.conf
-                path: cloud-config.conf
