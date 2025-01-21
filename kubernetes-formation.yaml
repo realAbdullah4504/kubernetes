@@ -408,9 +408,9 @@ Resources:
     DependsOn: EC2Instance
     Properties:
       AutoScalingGroupName: !Sub ${AWS::StackName}-asg
-      MinSize: 2
+      MinSize: 1
       MaxSize: 10
-      DesiredCapacity: 2
+      DesiredCapacity: 1
       HealthCheckType: EC2
       LaunchTemplate:
         LaunchTemplateId: !Ref EC2LaunchTemplate
@@ -424,12 +424,3 @@ Resources:
         - Key: k8s.io/cluster-autoscaler/kubernetes
           PropagateAtLaunch: true
           Value: owned
-      
-  # EC2InstanceWorker:
-  #   Type: AWS::EC2::Instance
-  #   Properties:
-  #     LaunchTemplate:
-  #       LaunchTemplateId: !Ref EC2LaunchTemplate
-  #       Version: !GetAtt EC2LaunchTemplate.LatestVersionNumber
-  #     SubnetId: subnet-0fcfb70a5bbee3b4a
-  #     SourceDestCheck: false
